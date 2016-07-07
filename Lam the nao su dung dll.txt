@@ -1,0 +1,31 @@
+Mô tả hàm tự động hóa sử dụng môi trường là IE browser như sau:
+
+1. Hàm load web truyền vào URl website và timeout sử dụng để load web luôn luôn trả về giá trị là 1
+	int loadBrowser(char *cURL, int iTimeOut) 
+	
+2. Hàm close website để đóng trình duyệt IE sau khi sử dụng	luôn luôn trả về giá trị là 1
+	int closeBrowser(void)
+	
+3.Hàm này sẽ kiểm tra xem ID của thẻ HTML có tồn tại trên web được gọi hay không
+	int checkElemnentByID(char *cIDElement,int iTimeState, int iTimeout)
+	cIDElement = id của thẻ html
+	iTimeState = 0 sẽ duyệt nội dung website với delay là 100ms theo timeout ngược lại delay sẽ là 1s
+	Hàm này trả về giá trị 1 là đúng 0 là thẻ đó có id không tồn tại trên website
+
+4.Hàm này sử dụng để lấy ra nội dung html của thẻ HTML theo id của thẻ đó
+	 string getInnerHTMLByID(char *cIDElement,int iTimeState, int iTimeout)
+	 
+5. Hàm này sẽ set giá trị cho thẻ HTML theo id trả lại 1 = true và 0 = false
+	int setElemnentByID(char *cIDElement,char *cAttribute, char *cAttrValue,int iTimeState, int iTimeout)
+	
+6. Hàm này sẽ click vào thẻ HTML theo id của thẻ đó với 1 = true và 0 = false
+	int clickElementByID(char *cIDElement,int iTimeState, int iTimeout)
+	
+7. click thẻ HTMl theo class với 1 = true và 0 = false
+	int clickElementByClass(char *cTagName,char *cClassValue,int iTimeState, int iTimeout)
+	
+8. Click thẻ HTML theo vị trí của thẻ đó trên web với 1 = true và 0 = false
+	 int clickElementByTagPos(char *cTagName,int iPos,int iTimeState, int iTimeout)
+	 
+9. Hàm này sẽ lấy toàn bộ nội dung HTML của website
+	string getAllHTMLWebsite()

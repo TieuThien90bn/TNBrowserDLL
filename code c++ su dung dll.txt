@@ -1,0 +1,73 @@
+#include <Windows.h>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+typedef int (*loadWebBrowser)(string, int );
+typedef string (*getInnerHTMLByID)(char *,int,int);
+typedef int (*closeBrowser)(void );
+typedef int (*setElemnentByID)(char *,char *, char *,int , int );
+typedef int (*clickElemnentByID)(char *,int , int );
+typedef int (*clickElemnentByClass)(char *,char *,int , int );
+typedef int (*clickElementByTagPos)(char *,int,int , int );
+typedef string (*getAllHTMLWebsite)(void);
+typedef void (*ChromeDriver)(string);
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	HINSTANCE hLoadChromeDriver = NULL;
+	ChromeDriver fc_ChromeDriver = NULL;
+
+	hLoadChromeDriver = LoadLibrary(L"E:\\tuannx2\\selenium-dotnet-2.53.0\\net35\\WebDriver.dll");
+	if(hLoadChromeDriver != NULL) {
+		fc_ChromeDriver = (ChromeDriver)GetProcAddress(hLoadChromeDriver,"ChromeDriver");
+		if(fc_ChromeDriver != NULL) {
+			fc_ChromeDriver("E:\\Setup\\chromedriver_win32");
+		}
+	}
+	getchar();
+	return 0;
+
+	//printExportedFunctions("C:\\Program Files (x86)\\Google\\Chrome\\Application\\50.0.2661.102\\chrome.dll");
+	loadWebBrowser fc_loadWebBrowser = NULL;
+	closeBrowser fc_closeBrowser = NULL;
+	getInnerHTMLByID fc_getInnerHTMLByID = NULL;
+	setElemnentByID fc_setElemnentByID = NULL;
+	clickElemnentByID fc_clickElemnentByID = NULL;
+	clickElemnentByClass fc_clickElemnentByClass = NULL;
+	clickElementByTagPos fc_clickElementByTagPos = NULL;
+	getAllHTMLWebsite fc_getAllHTMLWebsite = NULL;
+	HINSTANCE hLoadBrowserDll = LoadLibrary(L"tntBrowserControls.dll");
+
+	if(hLoadBrowserDll != NULL) {
+		cout << "Load lib successed.\r\n";
+		fc_closeBrowser = (closeBrowser)GetProcAddress(hLoadBrowserDll,"closeBrowser");
+		fc_loadWebBrowser = (loadWebBrowser)GetProcAddress(hLoadBrowserDll,"loadBrowser");
+		fc_getInnerHTMLByID = (getInnerHTMLByID)GetProcAddress(hLoadBrowserDll,"getInnerHTMLByID");
+		fc_setElemnentByID = (setElemnentByID)GetProcAddress(hLoadBrowserDll,"setElemnentByID");
+		fc_clickElemnentByClass = (clickElemnentByClass)GetProcAddress(hLoadBrowserDll,"clickElementByClass");
+		fc_clickElementByTagPos = (clickElementByTagPos)GetProcAddress(hLoadBrowserDll,"clickElementByTagPos");
+		fc_clickElemnentByID = (clickElemnentByID)GetProcAddress(hLoadBrowserDll,"clickElementByID");
+		fc_getAllHTMLWebsite = (getAllHTMLWebsite)GetProcAddress(hLoadBrowserDll,"getAllHTMLWebsite");
+
+		if(fc_loadWebBrowser != NULL && fc_closeBrowser != NULL
+				&& fc_getInnerHTMLByID != NULL) {
+			int iResult = fc_loadWebBrowser("http://www.nhaccuatui.com/",20);
+			
+			iResult = fc_setElemnentByID("txtSearch","value","dem ngay xa em",0,120);
+			iResult = fc_clickElemnentByID("btnSearch",0,120);
+			if(iResult == 0) {
+				fc_closeBrowser();
+			}
+			//fc_closeBrowser();
+			//cout << "Result: " << strHTML;
+		}
+		else {
+			cout << "Not found method.\r\n";
+		}
+		FreeLibrary(hLoadBrowserDll);
+	}
+	getchar();
+	return 0;
+}
